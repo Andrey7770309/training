@@ -1,0 +1,4 @@
+*** Variables ***
+
+${STATUS_OK}             200
+${STATUS_UNAUTHORIZED}   401
