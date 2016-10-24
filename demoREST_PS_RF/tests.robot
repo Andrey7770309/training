@@ -29,22 +29,23 @@ Auth request
 Get response header
     [Documentation]    Check the Host from response headers
     ${response}=    Call get
-    ${result}=    Get Json Value    ${response.content}    /headers/Host
-    RequestsChecker.Common Check    ${response}
-    Should Be Equal    ${result}    "httpbin.org"
+    ${result}=    Get Json Value    json_string=${response.content}    json_pointer=/headers/Host
+    RequestsChecker.Common Check    response=${response}
+    Should Be Equal    first=${result}    second="httpbin.org"
 
 Count response lines
     [Documentation]    Check number of lines in stream response is the same to a given one
     Set Test Variable    ${number_of_lines}    3
-    ${response}=    Call steam      ${number_of_lines}
-    ${result}=    Get Line Count    ${response.content}
-    Should Be Equal As Numbers      ${result}    ${number_of_lines}
-    RequestsChecker.Common Check    ${response}
+    ${response}=    Call steam      lines_number=${number_of_lines}
+    ${result}=    Get Line Count    string=${response.content}
+    RequestsChecker.Common Check    response=${response}
+    Should Be Equal As Numbers      first=${result}    second=${number_of_lines}
 
 *** Keywords ***
 Authentication
-    [Arguments]    ${base_name}    ${base_password}    ${check_name}    ${check_password}    ${status_code}
     [Documentation]    Check status_code from response after login attempt\n
     ...                with credentials
-    ${response}=    Call basic auth    ${base_name}    ${base_password}    ${check_name}    ${check_password}
-    RequestsChecker.Check Status Code    ${status_code}    ${response}
+    [Arguments]    ${base_name}    ${base_password}    ${check_name}    ${check_password}    ${status_code}
+    ${response}=    Call basic auth      base_name=${base_name}      base_password=${base_password}
+    ...                                  check_name=${check_name}    check_password=${check_password}
+    RequestsChecker.Check Status Code    code=${status_code}         response=${response}
