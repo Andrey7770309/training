@@ -17,7 +17,8 @@ class DemoREST(object):
             check_name: use for login attempt
             check_password: use for login attempt
         """
-        url = '{}/basic-auth/{}/{}'.format(BASE_URL, base_name, base_password)
+        url = '{BASE_URL}/basic-auth/{base_name}/{base_password}'.format(
+            BASE_URL=BASE_URL, base_name=base_name, base_password=base_password)
         response = requests.get(url, auth=(check_name, check_password))
         return response
 
@@ -25,7 +26,7 @@ class DemoREST(object):
     @RequestsLogger.log_decorator
     def call_get():
         """Get response from response"""
-        url = '{}/get'.format(BASE_URL)
+        url = '{BASE_URL}/get'.format(BASE_URL=BASE_URL)
         response = requests.get(url)
         return response
 
@@ -38,6 +39,6 @@ class DemoREST(object):
         Args:
             lines_number: desirable number of lines in response
         """
-        url = '{}/stream/{}'.format(BASE_URL, lines_number)
+        url = '{BASE_URL}/stream/{lines_number}'.format(BASE_URL=BASE_URL, lines_number=lines_number)
         response = requests.get(url)
         return response
